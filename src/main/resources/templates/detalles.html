@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/header :: head('Detalle de Compra - Bolsos&Co')}"></head>
+<body>
+
+<div th:replace="~{fragments/header :: navbar}"></div>
+
+<main class="py-5">
+    <div class="container">
+        <div class="d-flex align-items-center gap-3 mb-4">
+            <a th:href="@{/compras}" class="btn btn-outline-secondary btn-sm rounded-pill">
+                <i class="bi bi-arrow-left"></i> Volver
+            </a>
+            <h1 class="fw-bold mb-0">Detalle de Compra #<span th:text="${compra.idCompra}"></span></h1>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <div class="card shadow-sm border-0 rounded-4 text-center p-4 h-100">
+                    <i class="bi bi-receipt fs-1 text-primary"></i>
+                    <h6 class="fw-bold mt-2 mb-0">Compra #<span th:text="${compra.idCompra}"></span></h6>
+                    <small class="text-secondary" th:text="${#temporals.format(compra.fecha, 'dd/MM/yyyy HH:mm')}"></small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm border-0 rounded-4 text-center p-4 h-100">
+                    <i class="bi bi-box-seam fs-1 text-success"></i>
+                    <h6 class="fw-bold mt-2 mb-0" th:text="${#lists.size(detalles)} + ' producto(s)'">3 productos</h6>
+                    <small class="text-secondary">Artículos comprados</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm border-0 rounded-4 text-center p-4 h-100">
+                    <i class="bi bi-currency-dollar fs-1 text-warning"></i>
+                    <h6 class="fw-bold mt-2 mb-0" th:text="|$${#numbers.formatDecimal(compra.total, 1, 2)}|">$99.99</h6>
+                    <small class="text-secondary">Total de la compra</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-header bg-transparent border-0 pt-4 px-4">
+                <h5 class="fw-bold mb-0"><i class="bi bi-receipt-cutoff"></i> Productos</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th class="ps-4">Producto</th>
+                                <th>Precio Unit.</th>
+                                <th class="text-center">Cantidad</th>
+                                <th class="text-end pe-4">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="d : ${detalles}">
+                                <td class="ps-4">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <img th:if="${d.producto.imagen}"
+                                             th:src="${d.producto.imagen}"
+                                             class="rounded-3"
+                                             style="width: 50px; height: 50px; object-fit: cover;">
+                                        <div>
+                                            <span class="fw-semibold" th:text="${d.producto.nombre}">Producto</span>
+                                            <small class="d-block text-secondary" th:text="${d.producto.categoria.nombre}">Categoría</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="fw-semibold" th:text="|$${#numbers.formatDecimal(d.precioUnitario, 1, 2)}|">$49.99</td>
+                                <td class="text-center" th:text="${d.cantidad}">2</td>
+                                <td class="text-end pe-4 fw-bold text-primary-brand" th:text="|$${#numbers.formatDecimal(d.subtotal, 1, 2)}|">$99.98</td>
+                            </tr>
+                        </tbody>
+                        <tfoot class="table-light">
+                            <tr>
+                                <td colspan="3" class="text-end fw-bold pe-4">Total</td>
+                                <td class="text-end pe-4 fw-bold fs-5 text-primary-brand" th:text="|$${#numbers.formatDecimal(compra.total, 1, 2)}|">$99.99</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

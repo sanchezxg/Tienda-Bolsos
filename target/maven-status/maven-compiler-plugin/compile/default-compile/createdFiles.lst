@@ -1,0 +1,10 @@
+com\tiendabolsos\model\rol.class
+com\tiendabolsos\Repositorios\repo_Rol.class
+com\tiendabolsos\controller\TiendaController.class
+com\tiendabolsos\model\CarritoItem.class
+com\tiendabolsos\model\usuario.class
+com\tiendabolsos\controller\UsuarioController.class
+com\tiendabolsos\TiendaBolsosApplication.class
+com\tiendabolsos\model\ruta.class
+com\tiendabolsos\Repositorios\repoUsuarios.class
+com\tiendabolsos\controller\HomeController.class

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" th:href="@{/images/icon.png}">
+</head>
+<body class="bg-light">
+
+
+
+<div class="container vh-100 d-flex justify-content-center align-items-center">
+
+    <div class="card border-dark shadow p-4" style="width: 30rem;">
+
+        <h2 class="text-center text-dark fw-bold mb-4">
+            Crear Cuenta
+        </h2>
+
+        <div th:if="${mensaje}"
+             th:text="${mensaje}"
+             class="alert alert-info text-center py-2 mb-3">
+        </div>
+
+        <form action="/usuarios/guardarRegistro" method="post">
+
+            <div class="mb-3">
+                <label class="form-label">Nombre de usuario</label>
+                <input type="text"
+                       class="form-control border-dark"
+                       name="nombre"
+                       placeholder="Ingrese su nombre de usuario">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Correo electrónico</label>
+                <input type="email"
+                       name="correo"
+                       class="form-control border-dark"
+                       placeholder="ejemplo@correo.com">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Contraseña</label>
+                <input type="password"
+                       name="contraseña"
+                       class="form-control border-dark"
+                       placeholder="Ingrese su contraseña">
+            </div>
+
+            <div class="d-grid">
+                <button class="btn btn-dark">
+                    Registrarse
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

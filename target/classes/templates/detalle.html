@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/header :: head(${producto.nombre} + ' - Bolsos&Co')}"></head>
+<body>
+
+<div th:replace="~{fragments/header :: navbar}"></div>
+
+<main class="py-5">
+    <div class="container">
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/Tienda/home}" class="text-decoration-none">Inicio</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/Tienda/catalogo}" class="text-decoration-none">Catálogo</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/Tienda/catalogo(categoria=${producto.categoria.nombre})}" class="text-decoration-none" th:text="${producto.categoria.nombre}">Categoría</a></li>
+                <li class="breadcrumb-item active" th:text="${producto.nombre}">Producto</li>
+            </ol>
+        </nav>
+
+        <div class="row g-5">
+            <div class="col-lg-6">
+                <div class="position-relative">
+                    <img th:src="${producto.imagen}" th:alt="${producto.nombre}" class="detail-image shadow-sm">
+                    <span class="product-badge badge bg-gold text-dark">Nuevo</span>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <small class="text-uppercase text-secondary fw-bold" th:text="${producto.categoria.nombre}">Categoría</small>
+                <h1 class="fw-bold display-6 mb-3" th:text="${producto.nombre}">Producto</h1>
+                <div class="mb-3">
+                    <span class="product-price fs-2" th:text="|$${#numbers.formatDecimal(producto.precio, 1, 2)}|">$99.99</span>
+                </div>
+                <p class="text-secondary lead" th:text="${producto.descripcion}">Descripción del producto</p>
+
+                <div class="d-flex gap-2 mb-4 text-secondary">
+                    <span><i class="bi bi-check-circle-fill text-success"></i> Stock disponible</span>
+                    <span><i class="bi bi-truck"></i> Envío rápido</span>
+                </div>
+
+                <form th:action="@{/Tienda/carrito/agregar}" method="post" class="add-to-cart-form">
+                    <input type="hidden" name="idProducto" th:value="${producto.idProducto}">
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <label class="fw-bold">Cantidad:</label>
+                        <div class="input-group qty-container" style="width: 130px;">
+                            <button type="button" class="btn btn-outline-secondary qty-btn qty-minus">-</button>
+                            <input type="number" name="cantidad" class="form-control text-center qty-input" value="1" min="1" max="99">
+                            <button type="button" class="btn btn-outline-secondary qty-btn qty-plus">+</button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                        <i class="bi bi-cart-plus"></i> Agregar al Carrito
+                    </button>
+                </form>
+
+                <div class="mt-4 pt-4 border-top">
+                    <div class="d-flex gap-4 justify-content-around">
+                        <div class="text-center">
+                            <i class="bi bi-truck fs-4 text-primary-brand"></i>
+                            <small class="d-block text-secondary">Envío gratis a CABA</small>
+                        </div>
+                        <div class="text-center">
+                            <i class="bi bi-arrow-return-left fs-4 text-primary-brand"></i>
+                            <small class="d-block text-secondary">30 días de cambio</small>
+                        </div>
+                        <div class="text-center">
+                            <i class="bi bi-shield-check fs-4 text-primary-brand"></i>
+                            <small class="d-block text-secondary">Compra segura</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="mt-5 pt-4">
+            <h3 class="fw-bold mb-4">Productos Relacionados</h3>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3" th:each="p : ${relacionados}" th:if="${p.idProducto != producto.idProducto}">
+                    <div class="product-card">
+                        <div class="position-relative overflow-hidden">
+                            <img th:src="${p.imagen}" th:alt="${p.nombre}" class="w-100" style="height: 200px; object-fit: cover;">
+                        </div>
+                        <div class="card-body p-3">
+                            <small class="text-secondary" th:text="${p.categoria.nombre}">Cat</small>
+                            <h6 class="fw-bold mt-1" th:text="${p.nombre}">Nombre</h6>
+                            <span class="product-price" th:text="|$${#numbers.formatDecimal(p.precio, 1, 2)}|">$99.99</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>
