@@ -20,4 +20,9 @@ public List<CategoriaProducto> listarCategorias(){
     return repoCategoria.findAll();
 
 }
+
+public CategoriaProducto BuscarCategoriaPorID(int id){
+    return repoCategoria.getReferenceById(id);
+
+}
 }

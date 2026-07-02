@@ -56,6 +56,12 @@
                 </li>
 
                 <li class="nav-item" th:if="${#authentication.name != 'anonymousUser'}">
+                    <a class="nav-link" th:href="@{/productos}">
+                        <i class="bi bi-box-seam"></i> Productos
+                    </a>
+                </li>
+
+                <li class="nav-item" th:if="${#authentication.name != 'anonymousUser'}">
                     <a class="nav-link" th:href="@{/logout}">Cerrar sesión</a>
                 </li>
 

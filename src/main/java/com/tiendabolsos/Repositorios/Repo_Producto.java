@@ -1,7 +1,9 @@
 package com.tiendabolsos.Repositorios;
 
+import com.tiendabolsos.model.CategoriaProducto;
 import com.tiendabolsos.model.Product;
 import com.tiendabolsos.model.rol;
+import com.tiendabolsos.model.usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,4 +16,7 @@ public interface Repo_Producto extends JpaRepository<Product, Integer> {
     List<Product> findByCategoria_Nombre(String nombre);
 
     List<Product> findAll();
+
+    List<Product> findByUsuarioIdUsuario(Integer id_usuario);
+
 }

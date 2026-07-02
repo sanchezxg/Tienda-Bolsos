@@ -39,5 +39,18 @@ public Product obtenerPorID(int id){
 
     return repoProducto.getReferenceById(id);
 }
+public List<Product> obtenerProductosUsarioPorID(Integer id){
 
+    return  repoProducto.findByUsuarioIdUsuario(id);
+}
+
+public void EliminarProducto(Integer Id){
+
+    repoProducto.deleteById(Id);
+}
+
+public void GuardarProducto(Product product){
+
+    repoProducto.save(product);
+}
 }

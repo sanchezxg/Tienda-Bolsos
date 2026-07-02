@@ -41,7 +41,7 @@ public class CompraController {
 
 @PostMapping ("/ProcesarCompra")
 @Transactional
-    public String Procesar(HttpSession session, @AuthenticationPrincipal UsuarioPrincipal usuarioLogueado, @RequestParam BigDecimal total){
+    public String ProcesarCompra(HttpSession session, @AuthenticationPrincipal UsuarioPrincipal usuarioLogueado, @RequestParam BigDecimal total){
 
 
         usuario usuario = repoUsuarios.findById(usuarioLogueado.getId())

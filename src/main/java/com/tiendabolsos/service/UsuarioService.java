@@ -67,5 +67,8 @@ public class UsuarioService {
 
 
     }
+public usuario BuscarUsuarioPorid(Integer id){
 
+        return repoUsuarios.getReferenceById(id);
+}
 }

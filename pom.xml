@@ -24,6 +24,7 @@
    
     <dependencies>
 
+
     <!-- Web (MVC incluido aquí) -->
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -34,6 +35,12 @@
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
+
+    <!-- Validación -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-validation</artifactId>
     </dependency>
 
     <!-- JPA (si lo vas a usar) -->

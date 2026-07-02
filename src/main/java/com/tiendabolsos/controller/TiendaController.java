@@ -8,6 +8,7 @@ import com.tiendabolsos.service.CategoriaService;
 import com.tiendabolsos.service.ProductService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -79,7 +80,7 @@ public class TiendaController {
         if (producto.isPresent()) {
             List<CarritoItem> items = obtenerCarrito(session);
             Optional<CarritoItem> existente = items.stream()
-                    .filter(i -> i.getProducto().getIdProducto().equals(idProducto))
+                    .filter(i -> i.getProducto().getIdProducto()==idProducto)
                     .findFirst();
             if (existente.isPresent()) {
                 existente.get().setCantidad(existente.get().getCantidad() + cantidad);
@@ -92,25 +93,38 @@ public class TiendaController {
     }
 
     @PostMapping("/carrito/actualizar")
-    public String actualizarCarrito(@RequestParam Long productoId,
+    public String actualizarCarrito(@RequestParam Integer productoId,
                                     @RequestParam int cantidad,
                                     HttpSession session) {
+
+
+
         List<CarritoItem> items = obtenerCarrito(session);
+        System.out.println("ID recibido: " + productoId);
+
+        for (CarritoItem item : items) {
+            System.out.println("ID del carrito: " + item.getProducto().getIdProducto());
+        }
         items.stream()
                 .filter(i -> i.getProducto().getIdProducto().equals(productoId))
                 .findFirst()
                 .ifPresent(item -> item.setCantidad(cantidad));
         session.setAttribute("carrito", items);
-        return "redirect:/carrito";
+
+        for (CarritoItem item : items) {
+            System.out.println(item.getProducto().getIdProducto() +
+                    " -> " + item.getCantidad());
+        }
+        return "redirect:/Tienda/carrito";
     }
 
     @PostMapping("/carrito/eliminar")
-    public String eliminarDelCarrito(@RequestParam Long productoId,
+    public String eliminarDelCarrito(@RequestParam Integer productoId,
                                      HttpSession session) {
         List<CarritoItem> items = obtenerCarrito(session);
         items.removeIf(i -> i.getProducto().getIdProducto().equals(productoId));
         session.setAttribute("carrito", items);
-        return "redirect:/carrito";
+        return "redirect:/Tienda/carrito";
     }
 
 
@@ -143,6 +157,8 @@ public class TiendaController {
                 .map(CarritoItem::getSubtotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
+
+
 
     @GetMapping("/registro")
    public String registrar(){

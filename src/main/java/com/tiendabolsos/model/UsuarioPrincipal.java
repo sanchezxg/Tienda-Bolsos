@@ -35,7 +35,7 @@ public class UsuarioPrincipal implements UserDetails {
     }
 
     public int getId() {
-        return usuario.getId_usuario();
+        return usuario.getIdUsuario();
     }
 
     // Métodos propios

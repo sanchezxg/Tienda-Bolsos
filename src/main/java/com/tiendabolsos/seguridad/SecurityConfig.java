@@ -51,6 +51,9 @@ public class SecurityConfig{
                              .loginProcessingUrl("/login")// 👈 donde se envía el POST del login
                              .defaultSuccessUrl("/Tienda/home", true)
                              .permitAll())
+                     .logout(logout -> logout
+                             .logoutSuccessUrl("/Tienda/home")
+                     )
                      .httpBasic(basic->{});
 
                     return http.build();

@@ -20,7 +20,7 @@ public class usuario {
     @Id
      @GeneratedValue(strategy = GenerationType.IDENTITY)// que se genere automaticamente
      @Column(name = "id_usuario")
-private int id_usuario;
+private int idUsuario;
      @Column(name = "nombre")
 private String nombre;
       @Column(name = "correo")
