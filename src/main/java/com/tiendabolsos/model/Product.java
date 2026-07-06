@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,7 +38,7 @@ public class Product {
     private BigDecimal precio;
 
 
-@Positive(message = "stock debe se mayor a 0")
+@PositiveOrZero(message = "stuck no puede ser negativo")
 @NotNull(message = "El stock es obligatorio")
     @Column(nullable = false)
     private Integer stock;

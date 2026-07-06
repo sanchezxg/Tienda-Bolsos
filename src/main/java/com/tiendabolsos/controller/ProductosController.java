@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -69,4 +70,36 @@ public class ProductosController {
         productoServicee.GuardarProducto(producto);
 return"redirect:/productos";
     }
+
+    @GetMapping ("/productos/editar/{idProducto}")
+
+    public String  EditarProducto(@PathVariable int idProducto,Model model){
+        Product producto=productoServicee.obtenerPorID(idProducto);
+
+        model.addAttribute("product",producto);
+        model.addAttribute("categorias",categoriaService.listarCategorias());
+        return "editar-producto";
+
+    }
+
+    @PostMapping("/productos/actualizar/{idProducto}")
+        public String Actualizar(@Valid@ModelAttribute Product product,BindingResult result, RedirectAttributes redirectAttributes
+    ,Model  model,@RequestParam int idCategoria,@AuthenticationPrincipal UsuarioPrincipal usuarioLogueado){
+        if (result.hasErrors()) {
+            Product producto=productoServicee.obtenerPorID(product.getIdProducto());
+
+            model.addAttribute("product",producto);
+            model.addAttribute("categorias",categoriaService.listarCategorias());
+            return "editar-producto";
+
+        }
+        CategoriaProducto categoria=categoriaService.BuscarCategoriaPorID(idCategoria);
+        usuario usuario=Aservice.BuscarUsuarioPorid(usuarioLogueado.getId());
+        product.setUsuario(usuario);
+        product.setCategoria(categoria);
+productoServicee.GuardarProducto(product);
+redirectAttributes.addFlashAttribute("success","cambio realizado");
+return"redirect:/productos";
+
+        }
 }

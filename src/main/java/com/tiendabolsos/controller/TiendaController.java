@@ -158,6 +158,20 @@ public class TiendaController {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+@GetMapping("/busquedaCatalogo")
+           public String BuscarCatalogo(@RequestParam String busqueda, Model model) {
+
+List<Product> products = productoServicee.BuscarProducto(busqueda);
+model.addAttribute("productos", products);
+model.addAttribute("categorias",categoriaService.listarCategorias());
+model.addAttribute("query",busqueda);
+
+return"resultados";
+}
+
+
+
+
 
 
     @GetMapping("/registro")

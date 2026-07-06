@@ -7,6 +7,14 @@
 
 <main class="py-5">
     <div class="container">
+        <div class="alert alert-danger"
+             th:if="${error}"
+             th:text="${error}">
+        </div>
+        <div class="alert alert-success"
+             th:if="${success}"
+             th:text="${success}">
+        </div>
         <h1 class="fw-bold mb-4">Tu Carrito</h1>
 
         <div th:if="${#lists.isEmpty(items)}" class="text-center py-5">

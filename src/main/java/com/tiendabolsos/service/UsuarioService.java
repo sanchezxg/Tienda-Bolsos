@@ -49,6 +49,25 @@ public class UsuarioService {
 
     }
 
+    public String CambiarContrasena(usuario u, String password){
+
+        if (repoUsuarios.existsByCorreo(u.getCorreo())){
+
+            u.setContraseña(
+                    passwordEncoder.encode(password)
+            );
+
+
+            repoUsuarios.save(u);
+
+            return"contraseña creada con exito";
+        }else{
+
+            return"usuario no encontrado";
+        }
+
+    }
+
 
     public String ValidarCredenciales(usuario u){
         try {
@@ -70,5 +89,10 @@ public class UsuarioService {
 public usuario BuscarUsuarioPorid(Integer id){
 
         return repoUsuarios.getReferenceById(id);
+}
+
+public Optional<usuario> BuscarPorCorreo(String email){
+        return repoUsuarios.findByCorreo(email);
+
 }
 }

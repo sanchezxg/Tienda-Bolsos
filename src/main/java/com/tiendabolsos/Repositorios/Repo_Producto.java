@@ -19,4 +19,7 @@ public interface Repo_Producto extends JpaRepository<Product, Integer> {
 
     List<Product> findByUsuarioIdUsuario(Integer id_usuario);
 
+
+    List<Product> findByNombreContainingIgnoreCase(String nombre);
+
 }

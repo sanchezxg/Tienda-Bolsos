@@ -228,6 +228,35 @@ main {
     to { opacity: 1; transform: translateY(0); }
 }
 
+.search-bar {
+    max-width: 500px;
+}
+
+.search-input {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    padding: 0.75rem 1rem;
+    border-radius: 50px 0 0 50px;
+    backdrop-filter: blur(4px);
+}
+
+.search-input::placeholder {
+    color: rgba(255,255,255,0.6);
+}
+
+.search-input:focus {
+    background: rgba(255,255,255,0.15);
+    border-color: var(--color-gold);
+    box-shadow: none;
+    color: #fff;
+}
+
+.search-btn {
+    border-radius: 0 50px 50px 0;
+    padding: 0.75rem 1.25rem;
+}
+
 @media (max-width: 768px) {
     .hero-title {
         font-size: 2.2rem;

@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión</title>
+    <title>Recuperar Contraseña</title>
 
-    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="icon" type="image/png" th:href="@{/images/icon.png}">
 </head>
@@ -14,50 +13,48 @@
 <div class="container vh-100 d-flex justify-content-center align-items-center">
 
     <div class="card border-dark shadow p-4" style="width: 25rem;">
-
+        <div th:if="${success}"
+             th:text="${success}"
+             class="alert alert-success">
+        </div>
+        <div th:if="${error}"
+             th:text="${error}"
+             class="alert alert-info text-center py-2 mb-3">
+        </div>
         <h2 class="text-center fw-bold mb-4">
-            Iniciar Sesión
+            Recuperar Contraseña
         </h2>
 
-        <form th:action="@{/login}" method="post">
+        <p class="text-center text-muted small mb-4">
+            Ingresá tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.
+        </p>
 
-            <div class="mb-3">
+
+
+        <form action="/usuarios/enviar-recuperacion" method="post">
+
+            <div class="mb-4">
                 <label class="form-label">Correo electrónico</label>
                 <input type="email"
-                       name="username"
+                       name="correo"
                        class="form-control border-dark"
                        placeholder="ejemplo@correo.com"
                        required>
             </div>
 
-            <div class="mb-4">
-                <label class="form-label">Contraseña</label>
-                <input type="password"
-                       class="form-control border-dark"
-                       name="password"
-                       placeholder="Ingrese su contraseña"
-                       required>
-            </div>
-
-            <div class="text-end mb-3">
-                <a href="/usuarios/recuperar-contrasena" class="text-dark text-decoration-none small">
-                    ¿Olvidaste tu contraseña?
-                </a>
-            </div>
-
             <div class="d-grid mb-3">
                 <button type="submit" class="btn btn-dark">
-                    Iniciar Sesión
+                    Enviar enlace
                 </button>
             </div>
 
-            <div class="text-center">
-                <a href="/registro" class="text-dark text-decoration-none">
-                    ¿No tienes una cuenta? Regístrate
-                </a>
-            </div>
-
         </form>
+
+        <div class="text-center">
+            <a href="/usuarios/login" class="text-dark text-decoration-none small">
+                Volver a Iniciar Sesión
+            </a>
+        </div>
 
     </div>
 

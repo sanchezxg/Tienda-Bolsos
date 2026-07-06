@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -41,22 +42,51 @@ public class CompraController {
 
 @PostMapping ("/ProcesarCompra")
 @Transactional
-    public String ProcesarCompra(HttpSession session, @AuthenticationPrincipal UsuarioPrincipal usuarioLogueado, @RequestParam BigDecimal total){
+    public String ProcesarCompra(HttpSession session, @AuthenticationPrincipal UsuarioPrincipal usuarioLogueado, @RequestParam BigDecimal total,
 
+ RedirectAttributes redirectAttributes){
 
-        usuario usuario = repoUsuarios.findById(usuarioLogueado.getId())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        LocalDateTime ahora = LocalDateTime.now();
-        Compra compra=new Compra();
-        compra.setTotal(total);
-        compra.setUsuario(usuario);
+if (!validarStuck(session,redirectAttributes)){
+    return "redirect:/Tienda/carrito";
+}else {
+
+    usuario usuario = repoUsuarios.findById(usuarioLogueado.getId())
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    LocalDateTime ahora = LocalDateTime.now();
+    Compra compra = new Compra();
+    compra.setTotal(total);
+    compra.setUsuario(usuario);
     compra.setFecha(ahora);
 
-repoCompra.save(compra);
-ProcesarDetalle(compra,session);
+    repoCompra.save(compra);
+
+
+    ProcesarDetalle(compra, session);
 
     session.removeAttribute("carrito");
-return "redirect:/Tienda/carrito";
+    redirectAttributes.addFlashAttribute("success", "Compra realizada correctamente.");
+    return "redirect:/Tienda/carrito";
+}
+
+
+}
+
+public boolean validarStuck(HttpSession session
+,RedirectAttributes redirectAttributes){
+
+    List<CarritoItem> itms=obtenerCarrito(session);
+
+  for (CarritoItem i: itms) {
+      if (i.getProducto().getStock() < i.getCantidad()) {
+
+          redirectAttributes.addFlashAttribute(
+                  "error",
+                  "No hay suficiente stock para " + i.getProducto().getNombre());
+          return false;
+      }
+  }
+
+return true;
 
 }
 
@@ -65,14 +95,18 @@ public void ProcesarDetalle(Compra compra, HttpSession session
 
 List<CarritoItem> itms=obtenerCarrito(session);
 itms.stream().forEach(i-> { DetalleCompra detalle=new DetalleCompra();
+    Product product=productService.obtenerPorID(i.getProducto().getIdProducto());
+
+    product.setStock(product.getStock()-i.getCantidad());
+    productService.GuardarProducto(product);
+    detalle.setProducto(i.getProducto());
+    detalle.setCompra(compra);
+    detalle.setCantidad(i.getCantidad());
+    detalle.setPrecioUnitario(i.getProducto().getPrecio());
+    detalle.setSubtotal(i.getProducto().getPrecio().multiply(BigDecimal.valueOf(i.getCantidad())));
+    detalleCompraService.guadar(detalle);
 
 
-detalle.setProducto(i.getProducto());
-detalle.setCompra(compra);
-detalle.setCantidad(i.getCantidad());
-detalle.setPrecioUnitario(i.getProducto().getPrecio());
-detalle.setSubtotal(i.getProducto().getPrecio().multiply(BigDecimal.valueOf(i.getCantidad())));
-detalleCompraService.guadar(detalle);
 });
 
 }
@@ -95,6 +129,8 @@ detalleCompraService.guadar(detalle);
         }
         return carrito;
     }
+
+
     @GetMapping("/detalles/{idCompra}")
 public String DetallarCompra(@PathVariable Integer idCompra, Model model){
 Compra compra=repoCompra.getReferenceById(idCompra);

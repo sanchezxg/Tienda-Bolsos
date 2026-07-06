@@ -53,4 +53,9 @@ public void GuardarProducto(Product product){
 
     repoProducto.save(product);
 }
+
+public List<Product> BuscarProducto(String nonbre){
+
+return repoProducto.findByNombreContainingIgnoreCase(nonbre);
+}
 }
