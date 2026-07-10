@@ -17,10 +17,11 @@
         <a class="navbar-brand fw-bold" th:href="@{/}">
             <i class="bi bi-bag"></i> Bolsos&Co
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <input type="checkbox" id="nav-toggle" class="nav-toggle-input">
+        <label for="nav-toggle" class="navbar-toggler" aria-label="Abrir menú">
             <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
+        </label>
+        <div class="nav-collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/Tienda/home}">Inicio</a>
