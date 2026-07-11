@@ -77,7 +77,7 @@ return "redirect:/usuarios/recuperar-contrasena";
             mensaje.setSubject("Recuperar contraseña");
 
             mensaje.setText(
-                    "http://localhost:8080/usuarios/reset-password?token="
+                    "https://tienda-bolsos.onrender.com/usuarios/reset-password?token="
                             + token);
 
             mailSender.send(mensaje);
