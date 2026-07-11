@@ -1,7 +1,9 @@
 package com.tiendabolsos.controller;
 
+import com.resend.core.exception.ResendException;
 import com.tiendabolsos.model.PasswordResetToken;
 import com.tiendabolsos.model.usuario;
+import com.tiendabolsos.service.EmailService;
 import com.tiendabolsos.service.ServiceToken;
 import com.tiendabolsos.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,7 @@ public class UsuarioController {
 @Autowired
     ServiceToken serviceToken;
     @Autowired
-    private JavaMailSender mailSender;
+    private EmailService emailService;
 
 
 
@@ -70,17 +72,19 @@ return "redirect:/usuarios/recuperar-contrasena";
             t.setFechaExpiracion(
                     LocalDateTime.now().plusMinutes(30));
             serviceToken.Guardar(t);
-            SimpleMailMessage mensaje = new SimpleMailMessage();
+            try {
+                emailService.enviarCorreo(
+                        usuario.get().getCorreo(),
+                        token
+                );
+            } catch (ResendException e) {
+                e.printStackTrace();
 
-            mensaje.setTo(usuario.get().getCorreo());
-
-            mensaje.setSubject("Recuperar contraseña");
-
-            mensaje.setText(
-                    "https://tienda-bolsos.onrender.com/usuarios/reset-password?token="
-                            + token);
-
-            mailSender.send(mensaje);
+                redirectAttributes.addFlashAttribute(
+                        "error",
+                        "No se pudo enviar el correo"
+                );
+            }
             redirectAttributes.addFlashAttribute("success","Email enviado");
             return "redirect:/usuarios/recuperar-contrasena";
 
